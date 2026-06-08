@@ -33,6 +33,20 @@ Live coding and Unity integration are on the way.
 
 The launcher kills stale processes on ports 5173 and 8600, starts the backend, waits for it to bind, then starts the Vite dev server and opens `http://localhost:5173`.
 
+### Launch (macOS experimental)
+
+```bash
+./start-dev.command
+```
+
+The macOS launcher mirrors the development workflow: it checks for `uv`, Node,
+npm, and FFmpeg, syncs dependencies, starts the backend and frontend, then opens
+`http://localhost:5173`. `scripts/macos/create-app.sh` creates a local
+`build/theDAW.app` wrapper with a native WebKit window, and
+`scripts/macos/create-dmg.sh` packages that wrapper into a drag-to-Applications
+DMG. This is not yet a fully self-contained, signed, or notarized macOS
+distribution; the app wrapper launches the checked-out repository.
+
 ### Manual launch
 
 ```bash
@@ -294,4 +308,3 @@ The library is served by the backend from `data/library.db` and the audio files 
 ## License
 
 Commercial use of these models is governed by the [Stability AI Community License](https://stability.ai/license).
-
