@@ -111,7 +111,7 @@ async def chimera_mashup(
     weave_max_polyphony: int = Form(0),
 ) -> dict[str, Any]:
     tools = probe()
-    if not tools["aubio"] or not tools["ffmpeg"]:
+    if not tools["ffmpeg"]:
         raise HTTPException(
             503,
             detail={
