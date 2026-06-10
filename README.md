@@ -10,6 +10,18 @@ theDAW also ships the first non-Mac port of Google's Magenta RealTime 2, which r
 
 [User Guide](docs/USER_GUIDE.md) · [Windows Setup](docs/windows/setup-guide.md) · [Prompting](docs/guides/prompting.md)
 
+<p align="center">
+  <a href="showcase/clips-recorded/_showcase_h.mp4">
+    <img src="docs/readme/showcase-poster.png" alt="Watch the theDAW feature-tour video" width="900">
+  </a>
+  <br>
+  <sub><em>▶ Click to watch the full feature tour — also available <a href="showcase/clips-recorded/_showcase_v.mp4">vertical (9:16)</a></em></sub>
+</p>
+
+<p align="center">
+  <img src="docs/readme/make.png" alt="theDAW MAKE workspace — prompt-driven generation, the Chimera fusion stack, and the dual live visualizers" width="900">
+</p>
+
 ---
 
 ## Repository Structure
@@ -83,33 +95,75 @@ ARC checkpoints are post-trained for 8-step inference at `cfg_scale=1`. RF check
 Every feature has a full reference in the [User Guide](docs/USER_GUIDE.md). This is the index.
 
 ### MAKE generation
+
+<p align="center"><img src="docs/readme/make-controls.png" alt="Generation controls: model, duration, sampler steps, CFG, seed, batch, and the sampler sigma fader" width="330"></p>
+
 One form drives text-to-audio, audio-to-audio, inpainting, and continuation. Supplied init audio, a text prompt, a painted inpaint region, and a Chimera stack all condition the same generation. The init audio accepts a voice recording from the built-in microphone recorder, an imported audio file, a clip from the media bucket or library, or a pattern rendered to a clip from the piano roll or step sequencer, and the init noise level sets how far the result departs from it. Controls cover duration, batch size, sampler steps, CFG, one-click seed reroll, and init noise level, and the model selector adjusts steps and CFG for RF variants on its own. Chimera blends several clips into one generation and beat-aligns them to a target tempo, automatic or fixed, under Start, Downbeat, or Phrase Weave alignment. Inpainting marks a region on a WaveSurfer preview. The Advanced Generation Panel holds output settings, and Quick Actions route a render to the editor, the init slot, or the inpaint module. Templates store full parameter sets, Saved Prompts keep a history, and the magic-prompt and sparkles buttons seed and optimize prompt text. The Spectrogram Viewer renders Mel, STFT, Chromagram, and CQT. The async job queue polls `/api/jobs/{id}`, supports a binary abort, and saves every render to the library.
 
 ### Generate, cloud and real-time
+
+<p align="center"><img src="docs/readme/magenta.png" alt="Magenta RealTime 2 text-to-music panel, the first non-Mac MRT2 port" width="820"></p>
+
 Suno cloud generation runs in the Aurora Cloud Console across simple, custom, cover, and mashup modes. The server-side key stays on the backend, finished tracks become library entries, and cover and mashup results write lineage edges. Magenta RealTime 2 provides text-to-music whenever its sidecar is running. theDAW vendors the first non-Mac MRT2 port in `sidecars/magenta-rt2-nvidia`, which removes the upstream macOS-only CMake guard so the model runs on Windows with WSL2 and NVIDIA, on native Linux, and on cloud GPUs. The extended sidecar also accepts MIDI-note and audio-style conditioning.
 
 ### EDIT multi-track editor
+
+<p align="center"><img src="docs/readme/edit.png" alt="Multi-track timeline with per-clip waveforms, trim and fade handles, and the cut tool" width="820"></p>
+
 The timeline holds many tracks, and each clip computes and caches its own waveform peaks. Move drags clips along the timeline and between tracks, and Cut splits a clip while preserving source alignment. The snap grid offers Off, 1/4, 1/8, and 1/16 divisions, and zoom spans 5 to 400 px/s. Each track carries an editable name, mute, exclusive solo, volume, pan, and removal, and the live mixer applies those faders, pan, mute, and solo during playback. Each clip exposes left and right trim handles and fade-in and fade-out handles. Inpaint from editor crops the visible region and sends it to the backend. Commit Edit renders the audible tracks into one 44.1 kHz stereo WAV through `OfflineAudioContext`, applying fades, volume, and stereo pan, then saves and downloads the result. The status bar shows timecode and clip and track counts, and Preview auditions the selected clip.
 
 ### MIX effects, mastering, and the Edit Tool Stack
+
+<p align="center"><img src="docs/readme/mix.png" alt="MIX effects browser, the flowing chain, and the Quick Master macro knobs" width="820"></p>
+
 A chain of 24 FFmpeg effects covers a mastering chain, compression, highpass and lowpass filters, volume, tempo, vocal processing, lo-fi vinyl, stereo widening, reverb, delay, a sub exciter, phase isolation, parametric mid EQ, LUFS normalization, pitch shift, echo, fade, declick, silence removal, denoise, and export to FLAC, MP3, AAC, and Opus. Four macro sliders (Drive, Width, Air, Punch) map onto the active effect. Process history keeps the last eight runs, and any prior output promotes back to the current source. The Edit Tool Stack adds six module families under `/api/edit/*` (mastering, restoration, enhance, delivery, creative-fx, creative-neural) whose GUIs iframe into the effect stage.
 
 ### DJ performance console
+
+<p align="center"><img src="docs/readme/dj.png" alt="Two-deck DJ console with jog wheels, the central mixer, and the FX rack" width="820"></p>
+
 Two decks run from a pro layout with jog wheels, a central mixer, scrolling waveform overviews, and a track browser, loading from the library, a saved set, or an online import. The engine handles octave-aware beatmatch sync with a continuous lock, key-lock, a 3-band EQ, a single-knob filter, and channel trim with auto-gain. Performance controls cover four hotcues, beat loops, momentary loop rolls, slip mode, beat jumps, and quantize. The FX rack adds a flanger, an impulse-response reverb, and a resonant wah per deck, with a master limiter on the DJ bus. Live stems ride on per-stem faders, and cue output pre-listens a deck through a headphone device chosen with `setSinkId`. Automix sequences and crossfades the set on its own, a ten-pad sampler bank fires one-shots, and a Next staging lane queues upcoming tracks. Design Mode turns the console into a hand-arranged layout that persists and exports.
 
 ### VJ visual engine
+
+<p align="center"><img src="docs/readme/vj.png" alt="3D reactive spectrogram terrain with bloom, particles, and camera input" width="820"></p>
+
 A 3D reactive visualizer renders a glowing spectrogram terrain with bloom, particles, fog, and shader effects, with several camera flight modes and color themes. The signal comes from the session audio, a microphone, MIDI, or a set sent from the DJ tab, and the visualizer pops out into a floating window for a second screen. The camera input accepts any camera the browser can open. It captures a local webcam or capture card, a phone or tablet camera on the same Wi-Fi through the LAN URL and QR code, and off-network devices including Quest 3 headsets through the Mobile Access External URL override (a Cloudflare tunnel or other public URL). HDMI capture cards, DSLRs in webcam mode, and virtual cameras all appear as selectable sources.
 
 ### TRAIN LoRA
+
+<p align="center"><img src="docs/readme/train.png" alt="TRAIN workshop for LoRA adapters with layer filtering and interval gating" width="820"></p>
+
 Eight adapter types are available: `lora`, `dora-rows`, `dora-cols`, `bora`, and their `-xs` variants. Layer filtering runs through `--include` and `--exclude` with bracket-range expansion such as `layers[0-11]`. Inference exposes runtime strength, per-LoRA interval gating within a sigma range, and a per-LoRA layer filter, and adapters stack additively. Pre-computed SVD bases (`--svd_bases_path`) speed startup for the `-XS` variants, and `--base_precision bf16` lowers VRAM use. Some training endpoints return HTTP 501 today, and the UI shows a specific message for that status.
 
 ### LEARN genealogy graph and visualizations
+
+<p align="center">
+  <img src="docs/readme/learn-3d.png" alt="3D force-directed genealogy galaxy" width="410">
+  <img src="docs/readme/learn-2d.png" alt="2D lineage family tree" width="410">
+</p>
+
 Every track and the relationships between them render as an interactive force-directed graph in 3D and 2D through `react-force-graph` and three.js, alongside a layered SVG DAG. Edges trace how a piece descended from its sources, so a remix, an inpaint, a stem split, a Chimera blend, and a Suno cover each show their parentage. The camera flies through the graph, focuses a node, and opens any track from its node. theDAW carries other rich visualizations alongside it: the four-mode spectrogram viewer, the real-time spectral analyzer with oscilloscope, spectrum, and radial modes and RMS and peak meters, wavesurfer.js waveforms, a three.js and GLSL cymatics visualizer, and the DJ jog wheels and beatgrids.
 
 ### Library and Catalogue
+
+<p align="center">
+  <img src="docs/readme/library.png" alt="Disk-backed library browser with search, favorites, and inline playback" width="410">
+  <img src="docs/readme/catalogue.png" alt="Cross-provider Catalogue gallery with provider badges and inspector" width="410">
+</p>
+
 The library lives on the backend, with audio on disk, metadata in `data/library.db`, and access over `/api/library/*`. Every render saves automatically with its prompt, model, duration, steps, CFG, seed, MIME type, and timestamp. List and grid views, full-text search, a favorites filter, and sorting by newest, duration, or title organize the collection, and each row plays inline with download, delete, favorite, and send-to-editor actions plus a details panel. The Catalogue view adds a cross-provider gallery with provider badges, an inspector with on-demand spectrograms, and a lineage panel, and it runs Suno cover and mashup from any entry.
 
 ### Bottom panel tools
+
+<p align="center">
+  <img src="docs/readme/sequencer.png" alt="16-step sequencer with five voices" width="410">
+  <img src="docs/readme/piano.png" alt="Piano roll with MIDI import and export" width="410">
+  <br>
+  <img src="docs/readme/visualizer.png" alt="Real-time spectral analyzer" width="410">
+  <img src="docs/readme/slide.png" alt="SLIDE glass control surface" width="410">
+</p>
+
 The spectral analyzer shows oscilloscope, spectrum, and radial modes with RMS and peak meters, a LIVE indicator, and a fullscreen toggle. The piano roll edits MIDI-style notes, imports and exports MIDI, and renders to the editor. The step sequencer runs a 16-step drum machine at 40 to 240 BPM with five synthesized voices, random fill, and render-to-editor. The media bucket holds session audio in WAV, MP3, FLAC, OGG, AAC, M4A, and Opus. SLIDE presents a glass surface of faders and knobs synced with the VJ engine and the audio. Details shows the selected library entry.
 
 ### MIDI mapping and Controller Vision
@@ -162,6 +216,26 @@ Runtime LoRA strength changes through `set_lora_strength(model, 0.5, lora_index=
 **Library slow or failing to save.** Confirm the backend is running on port 8600, since the list loads once it reports ready, and free disk space if writes begin to fail.
 
 [§23 of the User Guide](docs/USER_GUIDE.md#23-troubleshooting) has the full matrix.
+
+---
+
+## Credits
+
+theDAW was built by **[GANTASMO](https://github.com/gantasmo)** as part of the [Music Hackspace](https://musichackspace.org) Music Technology Hackathon at [Berklee College of Music](https://www.berklee.edu).
+
+Special thanks to [Music Hackspace](https://musichackspace.org), [Berklee College of Music](https://www.berklee.edu), and to Zack, CJ, Jordi, Zach, and Matt from [Stability AI](https://stability.ai) for their continued help and support.
+
+### Built with
+
+- **[Stability AI](https://stability.ai)** provides Stable Audio 3 and [stable-audio-tools](https://github.com/Stability-AI/stable-audio-tools), the diffusion model and pipeline at the core of theDAW.
+- **[Magenta](https://github.com/magenta)** RealTime by **[Google DeepMind](https://deepmind.google)** brings real-time music generation, running through theDAW's own [NVIDIA/CUDA port](sidecars/magenta-rt2-nvidia/), the first and only non-Mac port so far.
+- **[Suno](https://suno.com)** powers cloud music generation.
+- **[T5Gemma](https://huggingface.co/google/t5gemma-b-b-ul2)** by Google handles text conditioning.
+- **[Demucs](https://github.com/facebookresearch/demucs)** by Meta AI handles stem separation, and **[basic-pitch](https://github.com/spotify/basic-pitch)** by Spotify handles audio-to-MIDI transcription.
+- **[MLX](https://github.com/ml-explore/mlx)** by Apple is the inference core the Magenta port builds on, extended here with a CUDA backend.
+- **[PyTorch](https://pytorch.org)**, **[FFmpeg](https://ffmpeg.org)**, **[three.js](https://threejs.org)**, **[react-force-graph](https://github.com/vasturiano/react-force-graph)**, **[WaveSurfer.js](https://wavesurfer.xyz)**, **[React](https://react.dev)**, **[Vite](https://vitejs.dev)**, and **[Tailwind CSS](https://tailwindcss.com)** carry the rest, alongside the wider open-source community.
+
+Corrections and additions to this list are welcome through a GitHub issue.
 
 ---
 

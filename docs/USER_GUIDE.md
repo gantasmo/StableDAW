@@ -386,6 +386,8 @@ During the render, the COMMIT EDIT button shows an animated spinner and is disab
 
 The MIX tab (`MixPanel`) is the single-screen effects and mastering workspace. It applies one or more of 24 FFmpeg-backed processors to a source file as an ordered chain. Processing is synchronous; the result is returned as binary audio and made available for inline playback, download, and routing back into the app.
 
+![MIX tab: the effect catalog, the categorized rail, the active chain, and the Quick Master macro knobs](screenshots/mix-overview.png)
+
 ### 8.1 Layout
 
 MIX fills the viewport with no page scroll, in three bands:
@@ -398,6 +400,8 @@ The player footer is the process-chain transport.
 ### 8.2 Quick Master
 
 Quick Master exposes the four parameters of a `mastering_chain` entry as live knobs (low boost, high boost, limiter ceiling, target LUFS). Applying it inserts a single `mastering_chain` entry into the chain once, then live-updates that entry's parameters as the knobs move.
+
+![Quick Master macro knobs: Punch, Air, Drive, and Ceiling](screenshots/mix-quick-master.png)
 
 ### 8.3 Effect Catalog and Chain
 
@@ -452,6 +456,8 @@ The last processing invocations are retained in the store. Any history item can 
 
 The DJ tab (`DJView`) is a live two-deck performance mixer built on the SLIDE control surface. It loads tracks from the Library or any source, beatmatches and key-locks them, mixes through a full center console, and hands sets off to the VJ for synchronized visuals. The Web Audio engine (`djEngine.ts`) runs the signal path per deck: source, optional time-stretch, delay compensation, trim, three-band EQ, filter, gain and crossfade, the DJ master bus, then the shared player master.
 
+![DJ console: two decks with jog wheels, the center mixer, the FX and stems racks, and the source tree](screenshots/dj-console.png)
+
 ### 9.1 Waveform Hero and Decks
 
 The two deck waveforms span the full width at the top, each with a beatgrid, hotcue markers, and a moving playhead. A thin per-deck header shows the title, detected BPM, musical key and Camelot value, and the SYNC control. Below the hero, Deck A and Deck B flank the center mixer.
@@ -463,6 +469,8 @@ Each deck provides play and cue, four hotcues, loops with loop-roll and slip mod
 ### 9.3 Center Mixer
 
 The mixer is the console between the decks. Each channel has a gain knob, a three-band EQ (high, mid, low), a single-knob filter that sweeps low-pass below center and high-pass above center, and a volume fader. The two pitch faders sit as the outer columns of the mixer. A crossfader runs along the bottom, and the toggle row (Quantize, Auto-gain, Limiter, MIDI) sits above the gain knobs. A master limiter protects the DJ master bus.
+
+![Center mixer up close: pitch faders, per-deck gain and three-band EQ knobs, the single-knob filters, the channel faders, and the Automix toggle](screenshots/dj-center-mixer.png)
 
 ### 9.4 Live Stems and FX
 
@@ -1655,6 +1663,8 @@ Two offline helpers under `scripts/` bulk-import an existing SunoHarvester cache
 
 The `magenta` module (`/api/magenta`) brings Google's **Magenta RealTime 2 (MRT2)** real-time music model into the Generate workspace as a text→music option. The model option appears only when the sidecar is reachable: the MAKE/Generate panel probes `GET /api/magenta/probe` and shows **"Magenta RT2 (text→music)"** when available.
 
+![Magenta RealTime 2 text→music panel in the Generate workspace, the first non-Mac MRT2 port](screenshots/make-magenta-rt2.png)
+
 ### 27.1 The sidecar and conditioning
 
 MRT2 runs as a sidecar (default `http://localhost:8777`, override with `STABLEDAW_MAGENTA_URL`) that loads `MagentaRT2Jax` once on the GPU. theDAW ships an **extended** sidecar (`sidecars/magenta/server.py`) that supersedes the upstream text-only studio server and exposes all three conditioning modes over one `POST /generate`:
@@ -1761,6 +1771,16 @@ Operational endpoints used by the Settings modal and shell.
 | `POST /api/assistant/keys/{provider}/ingest` | Add one or more keys to a provider's pool. |
 | `DELETE /api/assistant/keys/{provider}/{hash}` · `DELETE /api/assistant/keys/{provider}` | Remove one key / clear a provider's pool. |
 | `GET /api/assistant/keys/{provider}/raw` | Return raw keys for local-trust convenience, where the backend operates as a trusted-local service. |
+
+---
+
+## Credits
+
+theDAW was built by **[GANTASMO](https://github.com/gantasmo)** as part of the [Music Hackspace](https://musichackspace.org) Music Technology Hackathon at [Berklee College of Music](https://www.berklee.edu).
+
+Special thanks to [Music Hackspace](https://musichackspace.org), [Berklee College of Music](https://www.berklee.edu), and to Zack, CJ, Jordi, Zach, and Matt from [Stability AI](https://stability.ai) for their continued help and support.
+
+**Built with:** [Stability AI](https://stability.ai) Stable Audio 3 and [stable-audio-tools](https://github.com/Stability-AI/stable-audio-tools) (the core diffusion model and pipeline); [Magenta](https://github.com/magenta) RealTime by [Google DeepMind](https://deepmind.google), running through theDAW's own [NVIDIA/CUDA port](../sidecars/magenta-rt2-nvidia/) (the first and only non-Mac port so far); [Suno](https://suno.com) (cloud generation); [T5Gemma](https://huggingface.co/google/t5gemma-b-b-ul2) by Google (text conditioning); [Demucs](https://github.com/facebookresearch/demucs) by Meta AI (stem separation); [basic-pitch](https://github.com/spotify/basic-pitch) by Spotify (audio-to-MIDI); [MLX](https://github.com/ml-explore/mlx) by Apple (the Magenta port's inference core, extended with a CUDA backend); and [PyTorch](https://pytorch.org), [FFmpeg](https://ffmpeg.org), [three.js](https://threejs.org), [react-force-graph](https://github.com/vasturiano/react-force-graph), [WaveSurfer.js](https://wavesurfer.xyz), [React](https://react.dev), [Vite](https://vitejs.dev), and [Tailwind CSS](https://tailwindcss.com), alongside the wider open-source community.
 
 ---
 
