@@ -91,6 +91,35 @@ export default function App() {
     document.documentElement.style.setProperty('--text-scale', String(uiScale));
   }, [uiScale]);
 
+  // App-wide COLOUR THEME: publish the chosen palette via data-theme on <html>
+  // (index.css holds the dark + light variable sets), then layer any per-user
+  // custom text/background colour on top as inline CSS variables. Inline styles
+  // beat the data-theme selector, so a custom colour overrides the palette; a
+  // null override is removed so the palette default shows through.
+  const theme = useLayoutPrefs((s) => s.theme);
+  const textColor = useLayoutPrefs((s) => s.textColor);
+  const bgColor = useLayoutPrefs((s) => s.bgColor);
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.theme = theme;
+    if (textColor) root.style.setProperty('--text-primary', textColor);
+    else root.style.removeProperty('--text-primary');
+    if (bgColor) root.style.setProperty('--bg', bgColor);
+    else root.style.removeProperty('--bg');
+  }, [theme, textColor, bgColor]);
+
+  // App-wide LEGIBILITY: high-contrast lifts dim/muted text off the background
+  // (data-contrast drives the overrides in index.css), and --min-text-px floors
+  // the tiniest font sizes so notification/label text stays readable. Both are
+  // CSS-only and layout-safe (font-size floor only; no padding/width change).
+  const highContrast = useLayoutPrefs((s) => s.highContrast);
+  const minTextPx = useLayoutPrefs((s) => s.minTextPx);
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.contrast = highContrast ? 'high' : 'normal';
+    root.style.setProperty('--min-text-px', `${minTextPx}px`);
+  }, [highContrast, minTextPx]);
+
   // ── Global Web MIDI listener ───────────────────────────────────
   // Any connected MIDI controller's note-on messages trigger the
   // synthesizer voice exposed by PianoRoll (triggerPianoNoteFromMidi).

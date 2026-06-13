@@ -206,10 +206,16 @@ export const SurfacePanel: React.FC<{ nodeId: NodeId }> = ({ nodeId }) => {
   // Frames live on REGION CONTAINERS now, so leaf widget panels are transparent
   // (controls float on the region's background). Pinned panels host their own
   // card. In Design Mode a faint dashed outline keeps each panel grabbable.
+  // Pinned panels (e.g. MIX's Input/Output/Effects/Chain/Library) host their own
+  // component and used to be fully transparent in normal mode, so their bounds
+  // were invisible — you couldn't tell where to drop/select. Give them a soft
+  // lavender outline in normal mode so every panel is delimited (matching the
+  // framed-region look of DJ). Design mode keeps transparent — the PanelHeader
+  // strip already marks the bounds there.
   const chrome = isPinned
-    ? 'bg-transparent'
+    ? (design ? 'bg-transparent' : 'rounded border border-(--surface-divider)')
     : node.bgFill
-      ? `rounded bg-(--panel) border ${design ? 'border-purple-400/40' : 'border-(--panel-border)'}`
+      ? `rounded bg-(--panel) border ${design ? 'border-purple-400/40' : 'border-(--surface-divider)'}`
       : design
         ? 'rounded border border-dashed border-purple-400/30'
         : 'bg-transparent';

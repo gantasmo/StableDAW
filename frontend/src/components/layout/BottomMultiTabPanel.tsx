@@ -60,10 +60,10 @@ export const BottomMultiTabPanel: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-purple-500/2 min-h-0">
+    <div className="make-surface h-full flex flex-col bg-purple-500/2 min-h-0 border-t border-(--surface-divider)">
       {/* Tabs row. When SLIDE is active its AUDIO/VISUAL content toggle lives
           here (right side) so the panel body gets full height for the lanes. */}
-      <div className="flex items-center justify-between border-b border-white/5 shrink-0 bg-black/30">
+      <div className="flex items-center justify-between border-b border-(--surface-divider) shrink-0 bg-black/30">
         <div className="flex overflow-x-auto no-scrollbar">
           {TAB_DEFS.map((t) => {
             const Icon = t.icon;

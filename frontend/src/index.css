@@ -112,28 +112,108 @@
  * utilities, including the important `!` variants (e.g. `text-[9px]!`).
  * Set from App.tsx via document.documentElement.style --text-scale.
  * ─────────────────────────────────────────────────────────────────────────── */
-:root { --text-scale: 1; }
+/* --min-text-px (default 0px) is a legibility FLOOR for the tiniest fonts:
+ * `max(scaled-size, --min-text-px)` bumps 6-13px notification/label text up to
+ * a readable minimum WITHOUT enlarging the layout. Set from App.tsx. */
+:root { --text-scale: 1; --min-text-px: 0px; }
+
+/* Single source of truth for panel/region delimiter lines on the MIX/DJ surface.
+   Salmon (not gold) on purpose: gold/amber already signals "active/attention"
+   in this app, so it's reserved. Flip the hue or intensity here in one place. */
+:root { --surface-divider: rgba(250, 128, 114, 0.42); }
+:root[data-theme="light"] { --surface-divider: rgba(220, 90, 60, 0.5); }
+
+/* MAKE (AdvancedGenPanel) and the bottom multi-tab panel don't use the surface
+   system; their panels are .hardware-card. hardware-card is shared by ~14
+   components, so scope the salmon delimiter to these surfaces only (the
+   .make-surface wrapper) instead of recolouring every card app-wide. */
+.make-surface .hardware-card { border-color: var(--surface-divider); }
 
 /* Custom text classes bake their size in via @apply, so scale them too. Listed
  * BEFORE the text-[Npx] rules so an explicit `text-[Npx]` still wins when an
  * element uses both (e.g. `mono-label text-[10px]!`). */
-.compact-input { font-size: calc(11px * var(--text-scale, 1)) !important; }
-.mono-label    { font-size: calc(9px  * var(--text-scale, 1)) !important; }
-.mono-tag      { font-size: calc(8px  * var(--text-scale, 1)) !important; }
-.btn-primary   { font-size: calc(11px * var(--text-scale, 1)) !important; }
-.btn-ghost     { font-size: calc(10px * var(--text-scale, 1)) !important; }
+.compact-input { font-size: max(calc(11px * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.mono-label    { font-size: max(calc(9px  * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.mono-tag      { font-size: max(calc(8px  * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.btn-primary   { font-size: max(calc(11px * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.btn-ghost     { font-size: max(calc(10px * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
 
-.text-\[6px\],  .text-\[6px\]\!  { font-size: calc(6px  * var(--text-scale, 1)) !important; }
-.text-\[7px\],  .text-\[7px\]\!  { font-size: calc(7px  * var(--text-scale, 1)) !important; }
-.text-\[8px\],  .text-\[8px\]\!  { font-size: calc(8px  * var(--text-scale, 1)) !important; }
-.text-\[9px\],  .text-\[9px\]\!  { font-size: calc(9px  * var(--text-scale, 1)) !important; }
-.text-\[10px\], .text-\[10px\]\! { font-size: calc(10px * var(--text-scale, 1)) !important; }
-.text-\[11px\], .text-\[11px\]\! { font-size: calc(11px * var(--text-scale, 1)) !important; }
-.text-\[12px\], .text-\[12px\]\! { font-size: calc(12px * var(--text-scale, 1)) !important; }
-.text-\[13px\], .text-\[13px\]\! { font-size: calc(13px * var(--text-scale, 1)) !important; }
+.text-\[6px\],  .text-\[6px\]\!  { font-size: max(calc(6px  * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.text-\[7px\],  .text-\[7px\]\!  { font-size: max(calc(7px  * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.text-\[8px\],  .text-\[8px\]\!  { font-size: max(calc(8px  * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.text-\[9px\],  .text-\[9px\]\!  { font-size: max(calc(9px  * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.text-\[10px\], .text-\[10px\]\! { font-size: max(calc(10px * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.text-\[11px\], .text-\[11px\]\! { font-size: max(calc(11px * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.text-\[12px\], .text-\[12px\]\! { font-size: max(calc(12px * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
+.text-\[13px\], .text-\[13px\]\! { font-size: max(calc(13px * var(--text-scale, 1)), var(--min-text-px, 0px)) !important; }
 .text-\[15px\], .text-\[15px\]\! { font-size: calc(15px * var(--text-scale, 1)) !important; }
 .text-\[18px\], .text-\[18px\]\! { font-size: calc(18px * var(--text-scale, 1)) !important; }
 
 .text-xs,   .text-xs\!   { font-size: calc(0.75rem  * var(--text-scale, 1)) !important; }
 .text-sm,   .text-sm\!   { font-size: calc(0.875rem * var(--text-scale, 1)) !important; }
 .text-base, .text-base\! { font-size: calc(1rem     * var(--text-scale, 1)) !important; }
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * App-wide COLOUR THEME (Settings → Edit Layout Settings → Theme).
+ * The dark palette lives in the @layer base :root block above. This LIGHT
+ * override flips those same CSS variables when App.tsx sets data-theme="light"
+ * on <html>. Unlayered (like the text-scale rules) so it beats the layered
+ * base defaults regardless of specificity. Per-user custom colours set inline
+ * on <html> by App.tsx still win over these, because inline styles beat any
+ * selector. Defaults here MUST mirror THEME_DEFAULTS in layoutPrefsStore.ts.
+ * ─────────────────────────────────────────────────────────────────────────── */
+:root[data-theme="light"] {
+  --bg: #f7f7fb;
+  --panel: #ffffff;
+  --panel-border: #d9d5e4;
+  --accent: #7c3aed;
+  --accent-glow: rgba(124, 58, 237, 0.25);
+  --text-primary: #16121f;
+  --text-secondary: #5b5470;
+  --muted: #9b94a8;
+}
+/* The body background is a radial gradient with a hardcoded dark stop; re-point
+   it to a light wash in light mode so the top of the page isn't a dark halo. */
+:root[data-theme="light"] body {
+  background: radial-gradient(circle at 50% -20%, #ffffff 0%, var(--bg) 60%);
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * HIGH CONTRAST (Settings → Edit Layout Settings → Contrast).
+ * Many components hardcode dim Tailwind text utilities (text-zinc-500/600/700)
+ * and the --muted variable is nearly the background tone, so de-emphasized text
+ * blends into the background. When App.tsx sets data-contrast="high" we lift
+ * (dark theme) or deepen (light theme) those dim tones so every label stays
+ * readable. Unlayered + !important to beat Tailwind, mirroring the rules above.
+ * ─────────────────────────────────────────────────────────────────────────── */
+/* Dark theme: pull dim text UP toward white. Covers (a) the muted/secondary
+   CSS variables, (b) the dim zinc text utilities used for body text, and
+   (c) the low-opacity purple SECTION TITLES (text-purple-300, -300/70,
+   -200/80) — these read as faint grey on the MAKE screen and were the main
+   "I can't read the titles" complaint. Escaped slashes match Tailwind's
+   generated class names (e.g. .text-purple-300\/70). */
+:root[data-theme="dark"][data-contrast="high"] {
+  --text-secondary: #e2e8f0;   /* was #94a3b8 — used by .mono-label etc. */
+  --muted: #cbd5e1;            /* was #4b4453 — almost the bg tone */
+}
+:root[data-theme="dark"][data-contrast="high"] .text-zinc-700,
+:root[data-theme="dark"][data-contrast="high"] .text-zinc-600 { color: #b4b4b8 !important; }
+:root[data-theme="dark"][data-contrast="high"] .text-zinc-500,
+:root[data-theme="dark"][data-contrast="high"] .text-zinc-400 { color: #e4e4e7 !important; }
+/* Section/sub titles: lift the dim purple to a bright, fully-opaque lavender. */
+:root[data-theme="dark"][data-contrast="high"] .text-purple-300,
+:root[data-theme="dark"][data-contrast="high"] .text-purple-300\/70,
+:root[data-theme="dark"][data-contrast="high"] .text-purple-300\/80 { color: #e9d5ff !important; }
+:root[data-theme="dark"][data-contrast="high"] .text-purple-200\/80,
+:root[data-theme="dark"][data-contrast="high"] .text-purple-200\/70 { color: #f5edff !important; }
+:root[data-theme="dark"][data-contrast="high"] ::placeholder  { color: #a1a1aa !important; }
+
+/* Light theme: push dim text DOWN toward black. */
+:root[data-theme="light"][data-contrast="high"] {
+  --text-secondary: #3f3f46;
+  --muted: #52525b;
+}
+:root[data-theme="light"][data-contrast="high"] .text-zinc-700,
+:root[data-theme="light"][data-contrast="high"] .text-zinc-600,
+:root[data-theme="light"][data-contrast="high"] .text-zinc-500 { color: #3f3f46 !important; }
+:root[data-theme="light"][data-contrast="high"] ::placeholder  { color: #6b7280 !important; }

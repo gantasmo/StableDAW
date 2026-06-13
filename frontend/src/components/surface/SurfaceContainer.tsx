@@ -148,7 +148,10 @@ export const SurfaceContainer: React.FC<{ nodeId: NodeId }> = ({ nodeId }) => {
   const framed = !!node.framed;
   const shapeCss = FRAME_STYLE[node.frameShape ?? 'rounded'];
   const tint = node.frameTint;
-  const borderCol = tint != null ? `hsl(${hue(tint)} 80% 60%)` : design ? 'rgba(168,85,247,0.5)' : 'var(--panel-border)';
+  // Normal-mode fallback brightened from var(--panel-border) (#231e38, nearly
+  // the bg tone) to the shared --surface-divider (salmon) so region separations
+  // actually read. Design mode keeps the purple design tint.
+  const borderCol = tint != null ? `hsl(${hue(tint)} 80% 60%)` : design ? 'rgba(168,85,247,0.5)' : 'var(--surface-divider)';
   const fillCol = tint != null ? `hsl(${hue(tint)} 38% 11%)` : 'var(--panel)';
   const glowCss = node.frameGlow
     ? `drop-shadow(0 0 10px ${tint != null ? `hsl(${hue(tint)} 85% 55% / 0.6)` : 'rgba(168,85,247,0.55)'})`
@@ -168,7 +171,7 @@ export const SurfaceContainer: React.FC<{ nodeId: NodeId }> = ({ nodeId }) => {
         </>
       )}
       {!framed && node.bgFill && (
-        <div className="absolute inset-0 pointer-events-none rounded bg-(--panel) border border-(--panel-border)" />
+        <div className="absolute inset-0 pointer-events-none rounded bg-(--panel) border border-(--surface-divider)" />
       )}
       <div className={`relative h-full w-full min-h-0 min-w-0 ${framed ? 'p-1.5' : ''} ${highlighted ? 'ring-2 ring-amber-300/70 shadow-[0_0_12px_rgba(252,211,77,0.5)] rounded-md' : ''}`}>
         <FrGrid

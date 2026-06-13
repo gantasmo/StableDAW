@@ -806,3 +806,29 @@
   0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
   50% { box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25); }
 }
+
+/* ----------------------------------------------------------------------------
+   LEGIBILITY (added). The SLIDE-surface labels were 7.5–8px and dim greys —
+   the slider names ("VIDEOS"), the CC mappings ("CC 22"), the section heads and
+   the focus nav arrows all read as near-illegible. Bump the base sizes a notch,
+   lift the dim greys, and honour the global --min-text-px floor (Settings →
+   Min size) so they can be pushed larger still: font-size uses max(base, floor).
+   A later font-size longhand here wins over the earlier `font:` shorthand, and
+   the .slide-surface descendant selector outranks the bare base rules above. */
+.slide-surface .tw-name         { font-size: max(10px,  var(--min-text-px, 0px)); }
+.slide-surface .tw-map          { font-size: max(9px,   var(--min-text-px, 0px)); color: #c4c4cc; }
+.slide-surface .ts-num          { font-size: max(8px,   var(--min-text-px, 0px)); }
+.slide-surface .sl-section-head { font-size: max(9px,   var(--min-text-px, 0px)); color: #94a3b8; }
+.slide-surface .sl-mapchip      { font-size: max(9px,   var(--min-text-px, 0px)); color: #c4c4cc; }
+.slide-surface .sl-ph-label     { font-size: max(9px,   var(--min-text-px, 0px)); }
+.slide-surface .sl-pagenum      { font-size: max(9px,   var(--min-text-px, 0px)); }
+.slide-surface .sl-nav          { color: #d4d4d8; }
+.slide-surface .sl-grip         { color: #71717a; }
+
+/* High contrast (Settings → Contrast: High) pushes the dim greys the rest of
+   the way to clearly readable. */
+:root[data-theme="dark"][data-contrast="high"] .slide-surface .tw-map,
+:root[data-theme="dark"][data-contrast="high"] .slide-surface .sl-mapchip { color: #e4e4e7; }
+:root[data-theme="dark"][data-contrast="high"] .slide-surface .sl-section-head { color: #cbd5e1; }
+:root[data-theme="dark"][data-contrast="high"] .slide-surface .sl-nav { color: #f4f4f5; }
+:root[data-theme="dark"][data-contrast="high"] .slide-surface .sl-grip { color: #a1a1aa; }

@@ -313,8 +313,8 @@ export const AdvancedGenPanel: React.FC<{
 
   const sectionTitle = 'text-[10px] font-black uppercase tracking-widest text-purple-300';
   const subTitle = 'text-[9px] font-black uppercase tracking-widest text-purple-300/70';
-  const accentBox = 'rounded-lg border border-purple-500/15 bg-[#0c0a12]/70';
-  const colBox = 'rounded-lg bg-black/20 border border-white/5';
+  const accentBox = 'rounded-lg border border-(--surface-divider) bg-[#0c0a12]/70';
+  const colBox = 'rounded-lg bg-black/20 border border-(--surface-divider)';
   const SHIFT_MODES = ['LogSNR', 'Flux', 'Full', 'None'] as const;
   const tabBtn = (on: boolean) =>
     `flex items-center gap-1.5 px-5 py-1 rounded text-[10px] font-black uppercase tracking-widest transition-colors ${
@@ -346,7 +346,7 @@ export const AdvancedGenPanel: React.FC<{
   /* ────────────────────────────────────────────────────────────────────── */
 
   return (
-    <div className="h-full w-full overflow-hidden text-[11px] flex flex-col gap-1.5 p-1.5">
+    <div className="make-surface h-full w-full overflow-hidden text-[11px] flex flex-col gap-1.5 p-1.5">
 
       {/* ═══ TOP: input waveforms (INIT | INPAINT) ═══ */}
       <div className="shrink-0 grid grid-cols-2 gap-1.5" style={{ height: 128 }}>
@@ -546,7 +546,7 @@ export const AdvancedGenPanel: React.FC<{
                 </div>
 
                 {/* CENTER — chimera stack, full height */}
-                <div className="rounded-lg bg-black/20 border border-purple-500/15 p-2 min-h-0 overflow-y-auto" data-chimera-anchor="init-audio">
+                <div className="rounded-lg bg-black/20 border border-(--surface-divider) p-2 min-h-0 overflow-y-auto" data-chimera-anchor="init-audio">
                   <ChimeraStack />
                 </div>
 
@@ -708,9 +708,9 @@ export const AdvancedGenPanel: React.FC<{
                   { label: 'Effects', icon: Sliders, target: 'effects' as QuickTarget, desc: 'Send to Effects tab' },
                 ] as const).map(({ label, icon: Icon, target, desc }) => (
                   <button key={label} disabled={!lastAudioUrl} onClick={() => handleQuickAction(target)} title={desc}
-                    className={`group flex items-center gap-1.5 px-2 py-1.5 rounded border transition-all ${lastAudioUrl ? 'border-purple-900/40 bg-purple-950/20 hover:bg-purple-900/30 hover:border-purple-700/50 cursor-pointer' : 'border-white/5 bg-white/3 opacity-30 cursor-not-allowed'}`}>
-                    <Icon className={`w-3.5 h-3.5 ${lastAudioUrl ? 'text-purple-400' : 'text-zinc-600'}`} />
-                    <span className={`text-[10px] font-semibold ${lastAudioUrl ? 'text-zinc-300' : 'text-zinc-600'}`}>{label}</span>
+                    className={`group flex items-center gap-1.5 px-2 py-1.5 rounded border transition-all ${lastAudioUrl ? 'border-purple-900/40 bg-purple-950/20 hover:bg-purple-900/30 hover:border-purple-700/50 cursor-pointer' : 'border-white/5 bg-white/3 opacity-60 cursor-not-allowed'}`}>
+                    <Icon className={`w-3.5 h-3.5 ${lastAudioUrl ? 'text-purple-400' : 'text-zinc-400'}`} />
+                    <span className={`text-[10px] font-semibold ${lastAudioUrl ? 'text-zinc-300' : 'text-zinc-400'}`}>{label}</span>
                   </button>
                 ))}
               </div>
@@ -721,7 +721,7 @@ export const AdvancedGenPanel: React.FC<{
       {/* ═══ BOTTOM: edge-to-edge visualizers flanking the prompt ═══ */}
       <div className="shrink-0 grid gap-1.5" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,560px) minmax(0,1fr)', height: 196 }}>
         {/* VIZ LEFT */}
-        <VisualizerPanel initialMode="orb" audioNode={masterAudio} className="border border-purple-500/15" />
+        <VisualizerPanel initialMode="orb" audioNode={masterAudio} className="border border-(--surface-divider)" />
 
         {/* PROMPT */}
         <div className="hardware-card flex flex-col gap-1.5 min-h-0">
@@ -772,7 +772,7 @@ export const AdvancedGenPanel: React.FC<{
         </div>
 
         {/* VIZ RIGHT — flipped + icons on the left so it mirrors the left panel */}
-        <VisualizerPanel initialMode="orb" flipX iconsSide="left" audioNode={masterAudio} className="border border-purple-500/15" />
+        <VisualizerPanel initialMode="orb" flipX iconsSide="left" audioNode={masterAudio} className="border border-(--surface-divider)" />
       </div>
     </div>
   );
